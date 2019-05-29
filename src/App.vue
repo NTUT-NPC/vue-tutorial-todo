@@ -163,8 +163,10 @@ input[type="button"]:active {
 .todo-item__text {
   display: inline-block;
   width: calc(100% - 180px);
+  max-height: 100%;
   font-size: 1.5rem;
   color: #555555;
+  overflow: hidden;
 }
 
 .todo-item__delete-btn {
