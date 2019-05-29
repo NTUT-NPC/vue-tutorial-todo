@@ -31,8 +31,8 @@
           placeholder="請輸入待辦事項"
         >
         <div class="dialog-buttons">
-          <input class="dialog-buttons__confirm-btn" type="button" value="確認" @click="addTodo">
-          <input class="dialog-buttons__cancel-btn" type="button" value="取消" @click="cancelDialog">
+          <button class="dialog-buttons__confirm-btn" :disabled="!addTodoText" @click="addTodo">確認</button>
+          <button class="dialog-buttons__cancel-btn" @click="cancelDialog">取消</button>
         </div>
       </div>
     </div>
@@ -120,8 +120,14 @@ export default {
   cursor: pointer;
 }
 
-input[type="button"]:active {
+button:active {
   transform: scale(0.95);
+}
+
+button:disabled {
+  color: #777777;
+  border-color: #777777;
+  opacity: 0.7;
 }
 
 .todo-list {
