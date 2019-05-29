@@ -2,7 +2,9 @@
   <div id="app">
     <div class="header">
       <span class="header__title">Todooooooo</span>
-      <input class="header__add-btn" type="button" value="新增" @click="addTodoDialogVisible = true">
+      <button role="button" class="header__add-btn" @click="addTodoDialogVisible = true">
+        <span class="mdi mdi-plus"></span>
+      </button>
     </div>
     <div class="todo-list">
       <div v-for="(todo, index) in todos" :key="`todo-${index}`" class="todo-list__item">
@@ -15,7 +17,9 @@
         >
         <label :for="`cb-${index}`"></label>
         <span class="todo-item__text">{{ todo.text }}</span>
-        <input class="todo-item__delete-btn" type="button" value="刪除" @click="removeTodo(index)">
+        <button role="button" class="todo-item__delete-btn" @click="removeTodo(index)">
+          <span class="mdi mdi-delete"></span>
+        </button>
       </div>
     </div>
     <div v-if="addTodoDialogVisible" class="add-todo-dialog">
@@ -28,12 +32,7 @@
         >
         <div class="dialog-buttons">
           <input class="dialog-buttons__confirm-btn" type="button" value="確認" @click="addTodo">
-          <input
-            class="dialog-buttons__cancel-btn"
-            type="button"
-            value="取消"
-            @click="addTodoDialogVisible = false"
-          >
+          <input class="dialog-buttons__cancel-btn" type="button" value="取消" @click="cancelDialog">
         </div>
       </div>
     </div>
@@ -71,6 +70,10 @@ export default {
       console.log(newStatus)
       this.todos[todoObjectIndex].completed = newStatus
       this.saveToLocalStorage()
+    },
+    cancelDialog () {
+      this.addTodoDialogVisible = false
+      this.addTodoText = ''
     }
   }
 }
@@ -173,6 +176,7 @@ input[type="button"]:active {
   visibility: hidden;
   padding: 8px 16px;
   display: inline-block;
+  font-size: 1.25rem;
   border: 1px solid #ff3d3d;
   border-radius: 20px;
   background: transparent;
