@@ -2,22 +2,38 @@
   <div id="app">
     <div class="header">
       <span class="header__title">Todooooooo</span>
-      <input class="header__add-btn" type="button" value="新增">
+      <input class="header__add-btn" type="button" value="新增" @click="addTodoDialogVisible = true">
     </div>
     <div class="todo-list">
-      <div class="todo-list__item">
-        <input class="todo-item__checkbox" id="cb-1" type="checkbox">
-        <label for="cb-1"></label>
-        <span class="todo-item__text">waassssss</span>
-        <input class="todo-item__delete-btn" type="button" value="刪除">
+      <div v-for="(todo, index) in todos" :key="`todo-${index}`" class="todo-list__item">
+        <input
+          :checked="todo.completed"
+          @change="changeTodoStatus(index, $event.target.checked)"
+          class="todo-item__checkbox"
+          :id="`cb-${index}`"
+          type="checkbox"
+        >
+        <label :for="`cb-${index}`"></label>
+        <span class="todo-item__text">{{ todo.text }}</span>
+        <input class="todo-item__delete-btn" type="button" value="刪除" @click="removeTodo(index)">
       </div>
     </div>
-    <div class="add-todo-dialog">
+    <div v-if="addTodoDialogVisible" class="add-todo-dialog">
       <div class="add-todo-dialog__card">
-        <input class="add-todo-dialog__input" type="text" placeholder="請輸入待辦事項">
+        <input
+          v-model="addTodoText"
+          class="add-todo-dialog__input"
+          type="text"
+          placeholder="請輸入待辦事項"
+        >
         <div class="dialog-buttons">
-          <input class="dialog-buttons__confirm-btn" type="button" value="確認">
-          <input class="dialog-buttons__cancel-btn" type="button" value="取消">
+          <input class="dialog-buttons__confirm-btn" type="button" value="確認" @click="addTodo">
+          <input
+            class="dialog-buttons__cancel-btn"
+            type="button"
+            value="取消"
+            @click="addTodoDialogVisible = false"
+          >
         </div>
       </div>
     </div>
@@ -26,7 +42,37 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return {
+      addTodoDialogVisible: false,
+      addTodoText: '',
+      todos: JSON.parse(localStorage.getItem('todos')) || []
+    }
+  },
+  methods: {
+    saveToLocalStorage () {
+      localStorage.setItem('todos', JSON.stringify(this.todos))
+    },
+    addTodo () {
+      this.todos.push({
+        text: this.addTodoText,
+        completed: false
+      })
+      this.addTodoDialogVisible = false
+      this.addTodoText = ''
+      this.saveToLocalStorage()
+    },
+    removeTodo (todoObjectIndex) {
+      this.todos.splice(todoObjectIndex, 1)
+      this.saveToLocalStorage()
+    },
+    changeTodoStatus (todoObjectIndex, newStatus) {
+      console.log(newStatus)
+      this.todos[todoObjectIndex].completed = newStatus
+      this.saveToLocalStorage()
+    }
+  }
 }
 </script>
 
