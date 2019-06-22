@@ -29,6 +29,7 @@
           class="add-todo-dialog__input"
           type="text"
           placeholder="請輸入待辦事項"
+          @keydown.enter="addTodo"
         >
         <div class="dialog-buttons">
           <button class="dialog-buttons__confirm-btn" :disabled="!addTodoText" @click="addTodo">確認</button>
